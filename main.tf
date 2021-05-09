@@ -47,8 +47,8 @@ module "cloudsql" {
 module "gke" {
   source                = "./gke"
   region                = var.region
-  min_master_version    = data.google_container_engine_versions.central1a.latest_node_version
-  node_version          = data.google_container_engine_versions.central1a.latest_node_version
+  min_master_version    = "1.18.17-gke.100"
+  node_version          = "1.18.17-gke.100"
   gke_num_nodes         = var.gke_num_nodes
   vpc_name              = module.vpc.vpc_name
   subnet_name           = module.subnet.subnet_name

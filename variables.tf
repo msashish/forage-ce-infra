@@ -1,7 +1,7 @@
 # GCP variables
 
 variable "project_id" {
-  default      = "qwiklabs-gcp-00-aa77c6f5d862"
+  default      = "qwiklabs-gcp-01-7c01b5c2c07e"
   description = "Project id"
 }
 
