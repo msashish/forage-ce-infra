@@ -6,21 +6,25 @@
                 kubectl version --client (16+)
                 Google Cloud SDK 320.0.0
         
-        2) Create service account in GCP project for terraform purpose
+        2) Enable Cloud SQL Admin API for project
         
-        3) Grant service account, owner access on GCP project
+        3) Create service account terraform-sa in GCP project for terraform purpose
         
-        4) Create service account key credential and set GOOGLE_APPLICATION_CREDENTIALS
+        4) Grant service account, owner access on GCP project
+        
+        5) Create service account key credential and set GOOGLE_APPLICATION_CREDENTIALS
             
                 export GOOGLE_APPLICATION_CREDENTIALS="/Users/sheelava/msashishgit/forage-ce-infra/service_accounts/qwiklabs-gcp-key.json"
             
-        5) Create service account in GCP project for interactions with Cloud SQL
+        6) Create service account cloudsql-sa in GCP project for interactions with Cloud SQL
         
-        6) Grant access as Cloud SQL Client or Cloud SQL Admin or Cloud SQL Edit based on need
+        7) Grant access as Cloud SQL Client or Cloud SQL Admin or Cloud SQL Edit based on need
         
-        7) Create Cloud SQL service account key 
+                Cloud SQL Client IAM roles
         
-        8) Initialise gcloud connectivity to the project
+        8) Create Cloud SQL service account key 
+        
+        9) Initialise gcloud connectivity to the project
             
                 gcloud init
         
@@ -41,14 +45,31 @@
         4) Main terraform configuration
                 main.tf
         
-        5) Apply configuration to spinup infra
+        5) Ensure project id an region are set in variables.tf
+        
+        6) Apply configuration to spin-up infra (several minutes)
 
                 terraform init 
                 terraform workspace new dev
-                terraform workspace select dev  (if on some other workspace)
+                (if on some other workspace) terraform workspace select dev  
                 terraform plan
                 terraform apply
- 
+
+
+## Create secrets for use by Application        
+        
+        1) Create Database secret on GKE
+        
+            kubectl create secret generic postgres-secret \
+                --from-literal=username=postgres \
+                --from-literal=password=ShreeGanesh1 \
+                --from-literal=database=postgres
+        
+        2) Create cloussql service account secret on GKE
+        
+            kubectl create secret generic cloudsql-sa \
+            --from-file=service_account.json=service_accounts/cloudsql-sa-key.json
+            
                
 ## Validate infra spin-up using below
         
@@ -58,9 +79,14 @@
                 terraform state list (List and show Terraform state file)
                 terraform state show
         
-        2) Validate sql instance created
+        2) Validate GKE cluster created
+        
+                gcloud container clusters get-credentials gke-dev-cluster --region=us-central1 
+        
+        3) Validate sql instance created (state as RUNNABLE)
             
                 gcloud sql instances describe <instance name> --project <project id>
+                  gcloud sql instances describe sql-dev-47bf6f57 --project qwiklabs-gcp-01-c81a26698645
                 
         3) Test connection to sql instance
             
@@ -82,23 +108,9 @@
          If not, run below to add entry to kubectl config
          
                 gcloud container clusters get-credentials <cluster name> --region=<cluster region>
+                gcloud container clusters get-credentials gke-dev-cluster --region=us-central1 
  
-        
-## Create secrets for use by Application        
-        
-        1) Create Database secret on GKE
-        
-            kubectl create secret generic postgres-secret \
-                --from-literal=username=postgres \
-                --from-literal=password=ShreeGanesh1 \
-                --from-literal=database=postgres
-        
-        2) Create cloussql service account secret on GKE
-        
-            kubectl create secret generic cloudsql-sa \
-            --from-file=service_account.json=service_accounts/cloudsql-sa-key.json
-        
-        
+ 
 ## If you want to change project 
         
         0) Ensure proxy settings are clean 
