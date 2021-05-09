@@ -4,6 +4,7 @@
             
                 terraform version (Terraform v0.14.2)
                 kubectl version --client (16+)
+                Google Cloud SDK 320.0.0
         
         2) Create service account in GCP project for terraform purpose
         
@@ -52,6 +53,7 @@
 ## Validate infra spin-up using below
         
         1) Basic check
+        
                 terraform show
                 terraform state list (List and show Terraform state file)
                 terraform state show
@@ -74,7 +76,7 @@
                 
 ## How to manually configure kubectl:
           
-         When we use gcloud command, it adds cluster details to kubectl config  
+         When we use gcloud commands, it adds cluster details to kubectl config  
                 ex: at /users/sheelava/.kube/config
          
          If not, run below to add entry to kubectl config
@@ -84,14 +86,14 @@
         
 ## Create secrets for use by Application        
         
-        1) Create Database secret
+        1) Create Database secret on GKE
         
             kubectl create secret generic postgres-secret \
                 --from-literal=username=postgres \
                 --from-literal=password=ShreeGanesh1 \
                 --from-literal=database=postgres
         
-        2) Create cloussql service account secret
+        2) Create cloussql service account secret on GKE
         
             kubectl create secret generic cloudsql-sa \
             --from-file=service_account.json=service_accounts/cloudsql-sa-key.json
@@ -99,7 +101,7 @@
         
 ## If you want to change project 
         
-        0) Ensure proxy settings are clean
+        0) Ensure proxy settings are clean 
             
             <ensure proxy is unset and off n/w>
                 gcloud config unset proxy/port
@@ -108,7 +110,7 @@
 
         1) Reset GOOGLE_APPLICATION_CREDENTIALS with new key
                       
-                      export GOOGLE_APPLICATION_CREDENTIALS="/Users/sheelava/msashishgit/forage-ce-infra/service_accounts/qwiklabs-gcp-key.json"
+                export GOOGLE_APPLICATION_CREDENTIALS="/Users/sheelava/msashishgit/forage-ce-infra/service_accounts/qwiklabs-gcp-key.json"
                       
         2) Change existing gcloud config OR create a new one using new project id
             
@@ -116,16 +118,16 @@
                 
         3) Terraform cleanup
                         
-            Delete .terraform directory, lock and state files
-            Change project-id, region in variables.tf
-            Re-build infra
+                Delete .terraform directory, lock and state files
+                Change project-id, region in variables.tf
+                Re-build infra
             
             
 ## To know available gke node version
         
-        gcloud container get-server-config
+                gcloud container get-server-config
         
 ## To Destroy infrastructure     
         
-        terraform destroy -auto-approve
-        terraform destroy - target=module.cloudsql  (for module)
+                terraform destroy -auto-approve
+                terraform destroy - target=module.cloudsql  (for module)
