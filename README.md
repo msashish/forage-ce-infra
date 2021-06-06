@@ -62,13 +62,13 @@
         
             kubectl create secret generic postgres-secret \
                 --from-literal=username=postgres \
-                --from-literal=password=ShreeGanesh1 \
+                --from-literal=password=YourPassword \
                 --from-literal=database=postgres
         
         2) Create cloussql service account secret on GKE
         
             kubectl create secret generic cloudsql-sa \
-            --from-file=service_account.json=service_accounts/cloudsql-sa-key.json
+            --from-file=service_account.json=<path to key file>
             
                
 ## Validate infra spin-up using below
@@ -103,7 +103,7 @@
 ## How to manually configure kubectl:
           
          When we use gcloud commands, it adds cluster details to kubectl config  
-                ex: at /users/sheelava/.kube/config
+                ex: at $HOME/.kube/config
          
          If not, run below to add entry to kubectl config
          
@@ -122,7 +122,7 @@
 
         1) Reset GOOGLE_APPLICATION_CREDENTIALS with new key
                       
-                export GOOGLE_APPLICATION_CREDENTIALS="/Users/sheelava/msashishgit/forage-ce-infra/service_accounts/qwiklabs-gcp-key.json"
+                export GOOGLE_APPLICATION_CREDENTIALS="path to key file"
                       
         2) Change existing gcloud config OR create a new one using new project id
             
