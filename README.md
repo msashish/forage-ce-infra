@@ -14,7 +14,7 @@
         
         5) Create service account key credential and set GOOGLE_APPLICATION_CREDENTIALS
             
-                export GOOGLE_APPLICATION_CREDENTIALS="/Users/sheelava/msashishgit/forage-ce-infra/service_accounts/qwiklabs-gcp-key.json"
+                export GOOGLE_APPLICATION_CREDENTIALS="path to key file"
             
         6) Create service account cloudsql-sa in GCP project for interactions with Cloud SQL
         
